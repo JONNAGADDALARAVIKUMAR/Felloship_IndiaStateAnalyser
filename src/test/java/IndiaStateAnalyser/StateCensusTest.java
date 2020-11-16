@@ -16,7 +16,8 @@ public class StateCensusTest {
 	private static final String FILE_PATH_DELIMITER = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCensusData2.csv";
 	
 	private static final String STATE_CODES_FILE_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode.csv";
-	
+	private static final String STATE_CODES_FILE_PATH_WRONG_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaCode.csv";
+
 	@Test
 	public void thisTestCasePasesWhenReturnValueEqualsTonumberOfStates() { 
 		StateCensusAnalyser analyser = new StateCensusAnalyser();
@@ -105,5 +106,19 @@ public class StateCensusTest {
 		} catch (StateCensusException e) {
 			e.printStackTrace();
 		}	
+	}
+	
+	@Test
+	public void thisTestCaseExpectsNoSuchFileExceptionWhenWorngFilePathGivenStateCodes() throws IOException { //Sad test Case
+		
+		try {
+			StateCensusAnalyser analyser = new StateCensusAnalyser();
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			boolean result = analyser.checkFileExistOrNotStateCodes(STATE_CODES_FILE_PATH_WRONG_PATH);
+			Assert.assertTrue(result);
+		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}
 	}
 }

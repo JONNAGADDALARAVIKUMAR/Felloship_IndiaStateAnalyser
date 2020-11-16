@@ -130,4 +130,17 @@ public class StateCensusAnalyser {
 		}
 		return count;
 	}
+	
+	public boolean checkFileExistOrNotStateCodes(String FIle_PATH) throws StateCensusException, IOException {
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(IndianStateCodes.class).build();
+			Iterator<IndianStateCodes> iterator = csvToBean.iterator();
+			iterator.next();
+		} 
+		catch (NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		}
+		return true;
+	}
 }
