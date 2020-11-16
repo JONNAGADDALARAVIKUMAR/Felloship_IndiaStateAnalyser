@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Iterator;
-import java.util.regex.PatternSyntaxException;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -29,14 +28,26 @@ public class StateCensusAnalyser {
 			}
 		} catch(NoSuchFileException e) {
 			throw new StateCensusException("No Such File");
-		}
-		catch(PatternSyntaxException e) {
-			throw new StateCensusException("No Suitable Delimeter");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		return count;
 	}
+	
+	public boolean checkFileExistOrNot(String FIle_PATH) throws StateCensusException, IOException {
+		String[] headers = null;
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(CSVStateCensusWrongHeader.class).build();
+			Iterator<CSVStateCensusWrongHeader> iterator = csvToBean.iterator();
+			iterator.next();
+		} 
+		catch (NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		}
+		return true;
+	}
+	
 	
 	public String[] getHeaders(String FIle_PATH) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
 		
@@ -64,14 +75,12 @@ public class StateCensusAnalyser {
 			Iterator<CSVStateCensus> iterator = csvToBean.iterator();
 			
 			while(iterator.hasNext()) {
-				iterator.next().toString().split(",");
+				iterator.next();
 			}
-		} catch(NoSuchFileException e) {
-			throw new StateCensusException("No Such File");
+		} catch(RuntimeException e) {
+			throw new StateCensusException("Invalid Delimiter Occured");
 		}
-		catch(PatternSyntaxException e) {
-			throw new StateCensusException("No Suitable Delimeter");
-		} catch(Exception e) {
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return true;
@@ -91,5 +100,34 @@ public class StateCensusAnalyser {
 			throw new StateCensusException("Incorrect Header");
 		}
 		return true;
+	}
+	
+	
+	public int getMatchedStatesCount(String FIle_PATH_CODES, String FILE_PATH_CENSUS) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
+		int count = 0;
+		try {
+			Reader readerCodes = Files.newBufferedReader(Paths.get(FIle_PATH_CODES));
+			CsvToBean csvToBeanStateCodes = new CsvToBeanBuilder(readerCodes).withType(IndianStateCodes.class).build();
+			Iterator<IndianStateCodes> iteratorCodes = csvToBeanStateCodes.iterator();
+			
+			while(iteratorCodes.hasNext()) {
+				String stateCode = iteratorCodes.next().getState();
+				
+				Reader readerCensus = Files.newBufferedReader(Paths.get(FILE_PATH_CENSUS));
+				CsvToBean csvToBeanStateCensus = new CsvToBeanBuilder(readerCensus).withType(CSVStateCensus.class).build();
+				Iterator<CSVStateCensus> iteratorCensus = csvToBeanStateCensus.iterator();
+				
+				while(iteratorCensus.hasNext()) {
+					String stateCensus = iteratorCensus.next().getState();
+					if(stateCensus.contains(stateCode))
+						count++;
+				}
+			}
+		} catch(NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }
