@@ -1,5 +1,7 @@
 package IndiaStateAnalyser;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -30,5 +32,23 @@ public class StateCensusAnalyser {
 			e.printStackTrace();
 		}
 		return count;
+	}
+	
+	public String[] getHeaders(String FIle_PATH) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
+		
+		String[] headers = null;
+		try {
+			CSVReader read = new CSVReader(new FileReader(FIle_PATH));
+			headers = read.readNext();
+		}
+		catch(NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		}
+		catch(FileNotFoundException e) {
+			throw new StateCensusException("File Not Found");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return headers;
 	}
 }

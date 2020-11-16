@@ -9,6 +9,7 @@ import junit.framework.Assert;
 public class StateCensusTest {
 	private static final String FILE_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCensusData.csv";
 	private static final String WRONG_FILE_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaCensusData.csv";
+	private static final String FILE_PATH_WRONG_EXTENSION = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCensusData.json";
 	
 	@Test
 	public void thisTestCasePasesWhenReturnValueEqualsTonumberOfStates() { 
@@ -36,6 +37,25 @@ public class StateCensusTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void thisTestCaseExpectsHeadersOfFileEvenFileExtensionWrong() throws StateCensusException { //Sad test Case
+		
+		try {
+			StateCensusAnalyser analyser = new StateCensusAnalyser();
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			String[] headers = analyser.getHeaders(FILE_PATH_WRONG_EXTENSION);
+			Assert.assertEquals("State", headers[0]);
+			Assert.assertEquals("Population", headers[1]);
+			Assert.assertEquals("AreaInSqKm", headers[2]);
+			Assert.assertEquals("DensityPerSqKm", headers[3]);
+		} catch (StateCensusException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
