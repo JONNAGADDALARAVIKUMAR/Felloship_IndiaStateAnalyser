@@ -76,4 +76,20 @@ public class StateCensusAnalyser {
 		}
 		return true;
 	}
+
+	public boolean getHeadersOtherClass(String FIle_PATH) throws StateCensusException {
+		String[] headers = null;
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(CSVStateCensusWrongHeader.class).build();
+			Iterator<CSVStateCensusWrongHeader> iterator = csvToBean.iterator();
+			iterator.next();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (RuntimeException e) {
+			throw new StateCensusException("Incorrect Header");
+		}
+		return true;
+	}
 }

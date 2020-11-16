@@ -2,18 +2,17 @@ package IndiaStateAnalyser;
 
 import com.opencsv.bean.CsvBindByName;
 
-public class CSVStateCensus {
-	
-	@CsvBindByName(column = "State")
+public class CSVStateCensusWrongHeader {
+	@CsvBindByName(column = "Steat", required = true)
 	private String state;
 	
-	@CsvBindByName(column = "Population")
+	@CsvBindByName(column = "Pople", required = true)
 	private String population;
 	
-	@CsvBindByName(column = "AreaInSqKm")
+	@CsvBindByName(column = "AreaInSqKm", required = true)
 	private String areaInSqKm;
 	
-	@CsvBindByName(column = "DensityPerSqKm", required = true)
+	@CsvBindByName(column = "DensityPerSqFeet", required = true)
 	private String densityPerSqKm;
 	
 	public String getState() {

@@ -42,7 +42,7 @@ public class StateCensusTest {
 	}
 	
 	@Test
-	public void thisTestCaseExpectsHeadersOfFileEvenFileExtensionWrong() throws StateCensusException { //Sad test Case
+	public void thisTestCaseExpectsHeadersOrFileExtensionWrongException() throws StateCensusException { //Sad test Case
 		
 		try {
 			StateCensusAnalyser analyser = new StateCensusAnalyser();
@@ -61,7 +61,7 @@ public class StateCensusTest {
 	}
 	
 	@Test
-	public void thisTestCasePasesWhenReturnValueTrue() { 
+	public void thisTestCasePasesWhenDelimiterCorrectReturnValueTrue() { 
 		StateCensusAnalyser analyser = new StateCensusAnalyser();
 		boolean result;
 		try {		
@@ -70,6 +70,19 @@ public class StateCensusTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	@Test
+	public void thisTestCaseReceivesHeadersIfIncorrectExpectsException() { //Sad test Case
+		try {
+			StateCensusAnalyser analyser = new StateCensusAnalyser();
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			boolean result = analyser.getHeadersOtherClass(FILE_PATH);
+			Assert.assertTrue(result);
+		} catch(StateCensusException e) {
 			e.printStackTrace();
 		}	
 	}
