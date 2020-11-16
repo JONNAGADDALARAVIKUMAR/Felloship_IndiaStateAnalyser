@@ -157,4 +157,17 @@ public class StateCensusTest {
 			e.printStackTrace();
 		}	
 	}
+	
+	@Test
+	public void thisTestCaseReceivesHeadersIfIncorrectExpectsExceptionStateCodes() { //Sad test Case
+		try {
+			StateCensusAnalyser analyser = new StateCensusAnalyser();
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			boolean result = analyser.getHeadersOtherClassStateCodes(FILE_PATH);
+			Assert.assertTrue(result);
+		} catch(StateCensusException e) {
+			e.printStackTrace();
+		}	
+	}
 }

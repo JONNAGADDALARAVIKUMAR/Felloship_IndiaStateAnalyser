@@ -163,21 +163,37 @@ public String[] getHeadersStateCodes(String FIle_PATH) throws IOException, State
 	}
 
 	public boolean getStatesCountWhenTheDelimiterIsCorrectStateCodes(String FIle_PATH) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
-	try {
-		Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
-		CSVReader read = new CSVReader(reader);
-		CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(IndianStateCodes.class).build();
-		Iterator<IndianStateCodes> iterator = csvToBean.iterator();
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CSVReader read = new CSVReader(reader);
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(IndianStateCodes.class).build();
+			Iterator<IndianStateCodes> iterator = csvToBean.iterator();
 		
-		while(iterator.hasNext()) {
-			iterator.next();
+			while(iterator.hasNext()) {
+				iterator.next();
+			}
+		} catch(RuntimeException e) {
+			throw new StateCensusException("Invalid Delimiter Occured");
 		}
-	} catch(RuntimeException e) {
-		throw new StateCensusException("Invalid Delimiter Occured");
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
-	catch(Exception e) {
-		e.printStackTrace();
+	
+	public boolean getHeadersOtherClassStateCodes(String FIle_PATH) throws StateCensusException {
+		String[] headers = null;
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(IndianStateCodesWrongHeader.class).build();
+			Iterator<IndianStateCodesWrongHeader> iterator = csvToBean.iterator();
+			iterator.next();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (RuntimeException e) {
+			throw new StateCensusException("Incorrect Header");
+		}
+		return true;
 	}
-	return true;
-}
 }
