@@ -17,6 +17,7 @@ public class StateCensusTest {
 	
 	private static final String STATE_CODES_FILE_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode.csv";
 	private static final String STATE_CODES_FILE_PATH_WRONG_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaCode.csv";
+	private static final String STATE_CODES_FILE_PATH_WRONG_EXTENSION = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode.json";
 
 	@Test
 	public void thisTestCasePasesWhenReturnValueEqualsTonumberOfStates() { 
@@ -118,6 +119,24 @@ public class StateCensusTest {
 			boolean result = analyser.checkFileExistOrNotStateCodes(STATE_CODES_FILE_PATH_WRONG_PATH);
 			Assert.assertTrue(result);
 		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}
+	}
+	@Test	
+	public void thisTestCaseExpectsHeadersOrFileExtensionWrongExceptionStateCodes() throws StateCensusException { //Sad test Case
+		
+		try {
+			StateCensusAnalyser analyser = new StateCensusAnalyser();
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			String[] headers = analyser.getHeadersStateCodes(STATE_CODES_FILE_PATH_WRONG_EXTENSION);
+			Assert.assertEquals("SrNo", headers[0]);
+			Assert.assertEquals("State Name", headers[1]);
+			Assert.assertEquals("TIN", headers[2]);
+			Assert.assertEquals("StateCode", headers[3]);
+		} catch (StateCensusException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

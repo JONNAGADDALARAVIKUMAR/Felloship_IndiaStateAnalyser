@@ -143,4 +143,22 @@ public class StateCensusAnalyser {
 		}
 		return true;
 	}
+	
+public String[] getHeadersStateCodes(String FIle_PATH) throws IOException, StateCensusException { 
+		
+		String[] headers = null;
+		try {
+			CSVReader read = new CSVReader(new FileReader(FIle_PATH));
+			headers = read.readNext();
+		}
+		catch(NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		}
+		catch(FileNotFoundException e) {
+			throw new StateCensusException("File Not Found");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return headers;
+	}
 }
