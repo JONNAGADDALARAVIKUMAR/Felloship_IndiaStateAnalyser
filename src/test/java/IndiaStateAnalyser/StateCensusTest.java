@@ -18,7 +18,8 @@ public class StateCensusTest {
 	private static final String STATE_CODES_FILE_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode.csv";
 	private static final String STATE_CODES_FILE_PATH_WRONG_PATH = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaCode.csv";
 	private static final String STATE_CODES_FILE_PATH_WRONG_EXTENSION = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode.json";
-
+	private static final String STATE_CODES_FILE_PATH_DELIMITER = "C:\\Users\\Admin\\workspace\\IndiaStateAnalyser\\src\\main\\resources\\IndiaStateCode2.csv";
+	
 	@Test
 	public void thisTestCasePasesWhenReturnValueEqualsTonumberOfStates() { 
 		StateCensusAnalyser analyser = new StateCensusAnalyser();
@@ -139,5 +140,21 @@ public class StateCensusTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void thisTestCasePasesWhenDelimiterCorrectReturnValueTrueStateCodes() { 
+		StateCensusAnalyser analyser = new StateCensusAnalyser();
+		boolean result;
+		try {	
+			ExpectedException exception = ExpectedException.none();
+			exception.expect(StateCensusException.class);
+			result = analyser.getStatesCountWhenTheDelimiterIsCorrectStateCodes(STATE_CODES_FILE_PATH_DELIMITER);
+			Assert.assertTrue(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}	
 	}
 }

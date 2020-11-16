@@ -161,4 +161,23 @@ public String[] getHeadersStateCodes(String FIle_PATH) throws IOException, State
 		}
 		return headers;
 	}
+
+	public boolean getStatesCountWhenTheDelimiterIsCorrectStateCodes(String FIle_PATH) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
+	try {
+		Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+		CSVReader read = new CSVReader(reader);
+		CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(IndianStateCodes.class).build();
+		Iterator<IndianStateCodes> iterator = csvToBean.iterator();
+		
+		while(iterator.hasNext()) {
+			iterator.next();
+		}
+	} catch(RuntimeException e) {
+		throw new StateCensusException("Invalid Delimiter Occured");
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+	}
+	return true;
+}
 }
