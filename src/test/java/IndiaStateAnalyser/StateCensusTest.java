@@ -32,8 +32,8 @@ public class StateCensusTest {
 			StateCensusAnalyser analyser = new StateCensusAnalyser();
 			ExpectedException exception = ExpectedException.none();
 			exception.expect(StateCensusException.class);
-			int count = analyser.getStatesCount(WRONG_FILE_PATH);
-			Assert.assertEquals(29, count);
+			boolean result = analyser.getStatesCountWhenTheDelimiterIsCorrect(WRONG_FILE_PATH);
+			Assert.assertTrue(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (StateCensusException e) {
@@ -58,5 +58,19 @@ public class StateCensusTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void thisTestCasePasesWhenReturnValueTrue() { 
+		StateCensusAnalyser analyser = new StateCensusAnalyser();
+		boolean result;
+		try {		
+			result = analyser.getStatesCountWhenTheDelimiterIsCorrect(FILE_PATH);
+			Assert.assertTrue(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (StateCensusException e) {
+			e.printStackTrace();
+		}	
 	}
 }

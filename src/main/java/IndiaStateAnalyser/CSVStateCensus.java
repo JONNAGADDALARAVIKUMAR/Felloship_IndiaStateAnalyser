@@ -44,7 +44,7 @@ public class CSVStateCensus {
 	@Override
 	public String toString() {
 		return "state Name = " + state + 
-				", population = " + population + 
+				", population = " + population +
 				", areaInSqKm = " + areaInSqKm +
 				", densityPerSqKm = " + densityPerSqKm;
 	}

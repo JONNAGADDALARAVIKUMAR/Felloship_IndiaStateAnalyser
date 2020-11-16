@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.regex.PatternSyntaxException;
 import com.opencsv.CSVReader;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -19,7 +20,7 @@ public class StateCensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
 			CSVReader read = new CSVReader(reader);
-			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(CSVStateCensus.class).build();;
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(CSVStateCensus.class).build();
 			Iterator<CSVStateCensus> iterator = csvToBean.iterator();
 			
 			while(iterator.hasNext()) {
@@ -28,6 +29,9 @@ public class StateCensusAnalyser {
 			}
 		} catch(NoSuchFileException e) {
 			throw new StateCensusException("No Such File");
+		}
+		catch(PatternSyntaxException e) {
+			throw new StateCensusException("No Suitable Delimeter");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -50,5 +54,26 @@ public class StateCensusAnalyser {
 			e.printStackTrace();
 		}
 		return headers;
+	}
+	
+	public boolean getStatesCountWhenTheDelimiterIsCorrect(String FIle_PATH) throws IOException, StateCensusException { //Returns States Count and Loads CSV File into Iterator 
+		try {
+			Reader reader = Files.newBufferedReader(Paths.get(FIle_PATH));
+			CSVReader read = new CSVReader(reader);
+			CsvToBean csvToBean = new CsvToBeanBuilder(reader).withType(CSVStateCensus.class).build();
+			Iterator<CSVStateCensus> iterator = csvToBean.iterator();
+			
+			while(iterator.hasNext()) {
+				iterator.next().toString().split(",");
+			}
+		} catch(NoSuchFileException e) {
+			throw new StateCensusException("No Such File");
+		}
+		catch(PatternSyntaxException e) {
+			throw new StateCensusException("No Suitable Delimeter");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 }
